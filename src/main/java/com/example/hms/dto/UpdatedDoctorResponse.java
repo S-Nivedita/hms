@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class DoctorResponse {
+public class UpdatedDoctorResponse {
     private Long id;
     private String doctorName;
     private String address;

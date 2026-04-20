@@ -1,8 +1,7 @@
 package com.example.hms.service;
 import com.example.hms.dto.ChangePasswordRequest;
-import com.example.hms.dto.DoctorResponse;
+import com.example.hms.dto.UpdatedDoctorResponse;
 import com.example.hms.repository.DoctorSpecializationRepository;
-import com.example.hms.service.DoctorService;
 import com.example.hms.dto.UpdateDoctorRequest;
 import com.example.hms.model.Doctor;
 import com.example.hms.model.DoctorSpecialization;
@@ -11,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class DoctorServiceImpl implements DoctorService{
@@ -18,7 +19,7 @@ public class DoctorServiceImpl implements DoctorService{
     private DoctorRepository doctorRepository;
     @Autowired
     private DoctorSpecializationRepository doctorSpecializationRepository;
-    public DoctorResponse updateDoctor(Long id, UpdateDoctorRequest request){
+    public UpdatedDoctorResponse updateDoctor(Long id, UpdateDoctorRequest request){
         Doctor doctor=doctorRepository.findById(id).orElseThrow(()->new RuntimeException("Doctor not found"));
         DoctorSpecialization specialization= doctorSpecializationRepository.findById(request.getSpecializationId()).orElseThrow(()->new RuntimeException("Specialization not found"));
         doctor.setSpecialization(specialization);
@@ -31,8 +32,8 @@ public class DoctorServiceImpl implements DoctorService{
         Doctor updated=doctorRepository.save(doctor);
         return mapToResponse(updated);
     }
-    private DoctorResponse mapToResponse(Doctor doctor){
-        DoctorResponse dr=new DoctorResponse();
+    private UpdatedDoctorResponse mapToResponse(Doctor doctor){
+        UpdatedDoctorResponse dr=new UpdatedDoctorResponse();
         dr.setId(doctor.getId());
         dr.setDoctorName(doctor.getDoctorName());
         dr.setAddress(doctor.getAddress());
@@ -57,5 +58,11 @@ public class DoctorServiceImpl implements DoctorService{
        d.setPassword(request.getConfirmPassword());
        d.setUpdationDate(LocalDateTime.now());
        doctorRepository.save(d);
+    }
+    public List<String> getDoctorNames(){
+        List<Doctor> l=doctorRepository.findAll();
+        List<String> doctorName=new ArrayList<>();
+        l.forEach(i->doctorName.add(i.getDoctorName()));
+        return doctorName;
     }
 }
