@@ -70,5 +70,9 @@ public class UserServiceImpl implements UserService{
         UserResponse userResponse=mapToResponse(user);
         return userResponse;
     }
-
+    public UserResponse getUserById(Long id){
+        User u=userRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));
+        UserResponse userResponse=mapToResponse(u);
+        return userResponse;
+    }
 }

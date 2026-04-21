@@ -10,6 +10,7 @@ import java.util.List;
 public interface UserService {
     UserResponse registerUser(UserRequest userRequest);
     UserResponse loginUser(User user);
-    public List<UserResponse> getAllUsers();
-    public UserResponse updateUser(Long id,UserRequest userRequests);
+     List<UserResponse> getAllUsers();
+     UserResponse updateUser(Long id,UserRequest userRequests);
+     UserResponse getUserById(Long id);
 }
