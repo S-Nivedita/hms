@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 @RestController
-@RequestMapping("/api/doctorSpecialization")
+@RequestMapping("/api/doctorSpecializations")
 @CrossOrigin
 public class DoctorSpecializationController {
     @Autowired
     private DoctorSpecializationService doctorSpecializationService;
-    @GetMapping("/getAllSpecialization")
+    @GetMapping()
     public ResponseEntity<List<String>> getAllSpecialization(){
         List<String> l= doctorSpecializationService.getAllSpecialization();
         return ResponseEntity.ok(l);

@@ -26,7 +26,7 @@ public class DoctorController {
         doctorService.changePassword(id,request);
         return ResponseEntity.ok("Password Changed successfully");
     }
-    @GetMapping("/getAllDoctors")
+    @GetMapping()
     public ResponseEntity<List<String>> getAllDoctorName(){
         List<String> l= doctorService.getDoctorNames();
         return ResponseEntity.ok(l);

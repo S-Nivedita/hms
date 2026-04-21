@@ -48,16 +48,16 @@ public class DoctorServiceImpl implements DoctorService{
     }
     @Override
     public void changePassword(Long doctorId, ChangePasswordRequest request){
-       Doctor d=doctorRepository.findById(doctorId).orElseThrow(()->new RuntimeException("Doctor Id not found")) ;
-       if(!d.getPassword().equals(request.getCurrentPassword())){
-           throw new RuntimeException("Incorrect Password");
-       }
-       if(!request.getNewPassword().equals(request.getConfirmPassword())){
-           throw new RuntimeException("Password mismatch");
-       }
-       d.setPassword(request.getConfirmPassword());
-       d.setUpdationDate(LocalDateTime.now());
-       doctorRepository.save(d);
+        Doctor d=doctorRepository.findById(doctorId).orElseThrow(()->new RuntimeException("Doctor Id not found")) ;
+        if(!d.getPassword().equals(request.getCurrentPassword())){
+            throw new RuntimeException("Incorrect Password");
+        }
+        if(!request.getNewPassword().equals(request.getConfirmPassword())){
+            throw new RuntimeException("Password mismatch");
+        }
+        d.setPassword(request.getConfirmPassword());
+        d.setUpdationDate(LocalDateTime.now());
+        doctorRepository.save(d);
     }
     public List<String> getDoctorNames(){
         List<Doctor> l=doctorRepository.findAll();
