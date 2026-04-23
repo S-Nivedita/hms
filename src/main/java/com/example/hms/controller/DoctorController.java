@@ -30,4 +30,10 @@ public class DoctorController {
         List<String> l= doctorService.getDoctorNames();
         return ResponseEntity.ok(l);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UpdatedDoctorResponse> getDoctorById(@PathVariable Long id)
+    {
+        return ResponseEntity.ok(doctorService.getDoctorById(id));
+    }
 }

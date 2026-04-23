@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @Data
 @Entity
 @Table(name = "patient")
@@ -17,6 +18,7 @@ public class Patient {
     private long patientContactNo;
     private String patientEmail;
     private String patientGender;
+    private String patientAddress;
     private int patientAge;
     private String patientMedicalHistory;
     private LocalDateTime creationDate;
@@ -26,4 +28,20 @@ public class Patient {
     @ManyToOne
     @JoinColumn(name="doctor_id")
     private Doctor doctor;
+
+    @PrePersist
+    void onCreate()
+    {
+        if(this.creationDate == null)
+        {
+            this.creationDate = LocalDateTime.now();
+        }
+        this.updationDate = null;
+    }
+
+    @PreUpdate
+    void onUpdate()
+    {
+        this.updationDate = LocalDateTime.now();
+    }
 }

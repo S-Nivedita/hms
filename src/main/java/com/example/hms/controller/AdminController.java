@@ -2,6 +2,7 @@ package com.example.hms.controller;
 
 import com.example.hms.dto.AdminRequest;
 import com.example.hms.dto.AdminResponse;
+import com.example.hms.dto.DashboardResponse;
 import com.example.hms.model.Admin;
 import com.example.hms.repository.AdminRepository;
 import com.example.hms.service.AdminService;
@@ -15,7 +16,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/admin")
 public class AdminController {
     @Autowired
     private AdminService adminService;
@@ -23,6 +24,12 @@ public class AdminController {
     public AdminController(AdminService adminService)
     {
         this.adminService = adminService;
+    }
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<DashboardResponse> getDashboardDetails()
+    {
+        return ResponseEntity.ok(adminService.getDashboardDetails());
     }
 
     /*@PostMapping("/admin/login")

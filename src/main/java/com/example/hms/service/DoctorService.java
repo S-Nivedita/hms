@@ -14,4 +14,6 @@ public interface DoctorService {
     void changePassword(Long doctorId, ChangePasswordRequest request);
 
     List<String> getDoctorNames();
+
+    UpdatedDoctorResponse getDoctorById(Long id);
 }

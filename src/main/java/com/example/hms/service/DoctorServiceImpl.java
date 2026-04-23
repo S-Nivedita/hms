@@ -66,4 +66,9 @@ public class DoctorServiceImpl implements DoctorService{
         l.forEach(i->doctorName.add(i.getDoctorName()));
         return doctorName;
     }
+
+    public UpdatedDoctorResponse getDoctorById(Long id)
+    {
+        return mapToResponse(doctorRepository.findById(id).get());
+    }
 }
