@@ -9,6 +9,7 @@ import com.example.hms.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -59,10 +60,30 @@ public class DoctorServiceImpl implements DoctorService{
         d.setUpdationDate(LocalDateTime.now());
         doctorRepository.save(d);
     }
-    public List<String> getDoctorNames(){
+    public List<UpdatedDoctorResponse> getAllDoctors(){
         List<Doctor> l=doctorRepository.findAll();
-        List<String> doctorName=new ArrayList<>();
-        l.forEach(i->doctorName.add(i.getDoctorName()));
-        return doctorName;
+        return  l.stream().map(this::mapToResponse).toList();
+    }
+    public UpdatedDoctorResponse getDoctorById(Long id)
+    {
+        return mapToResponse(doctorRepository.findById(id).orElseThrow(()->new RuntimeException("Doctor not found")));
+    }
+    public UpdatedDoctorResponse addDoctor(UpdateDoctorRequest updateDoctorRequest){
+        Doctor doctor=new Doctor();
+        if(!updateDoctorRequest.getPassword().equals(updateDoctorRequest.getConfirmPassword())){
+            throw new RuntimeException("Password Mismatch");
+        }
+        doctor.setDoctorName(updateDoctorRequest.getDoctorName());
+        doctor.setDoctorEmail(updateDoctorRequest.getDoctorEmail());
+        doctor.setDoctorFees(updateDoctorRequest.getDoctorFees());
+        doctor.setContactNo(updateDoctorRequest.getContactNo());
+        doctor.setUpdationDate(LocalDateTime.now());
+        doctor.setCreationDate(LocalDateTime.now());
+        doctor.setAddress(updateDoctorRequest.getAddress());
+        doctor.setSpecialization(doctorSpecializationRepository.findById(updateDoctorRequest.getSpecializationId()).orElseThrow(()->new RuntimeException("Specialization not found")));
+        doctor.getSpecialization().setId(updateDoctorRequest.getSpecializationId());
+        doctor.setPassword(updateDoctorRequest.getPassword());
+        doctorRepository.save(doctor);
+        return mapToResponse(doctor);
     }
 }

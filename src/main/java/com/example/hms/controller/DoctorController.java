@@ -17,6 +17,23 @@ import java.util.List;
 public class DoctorController {
     @Autowired
     private DoctorService doctorService;
+    DoctorController(DoctorService doctorService){
+        this.doctorService=doctorService;
+    }
+    @GetMapping()
+    public ResponseEntity<List<UpdatedDoctorResponse>> getAllDoctor(){
+        List<UpdatedDoctorResponse> l= doctorService.getAllDoctors();
+        return ResponseEntity.ok(l);
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<UpdatedDoctorResponse> getDoctorById(@PathVariable Long id)
+    {
+        return ResponseEntity.ok(doctorService.getDoctorById(id));
+    }
+    @PostMapping()
+    public ResponseEntity<UpdatedDoctorResponse> postDoctor(@RequestBody UpdateDoctorRequest updateDoctorRequest){
+        return ResponseEntity.ok(doctorService.addDoctor(updateDoctorRequest));
+    }
     @PutMapping ("/{id}")
     public ResponseEntity<UpdatedDoctorResponse> updateDoctor(@PathVariable Long id, @RequestBody UpdateDoctorRequest request){
         return ResponseEntity.ok(doctorService.updateDoctor(id,request));
@@ -26,9 +43,5 @@ public class DoctorController {
         doctorService.changePassword(id,request);
         return ResponseEntity.ok("Password Changed successfully");
     }
-    @GetMapping()
-    public ResponseEntity<List<String>> getAllDoctorName(){
-        List<String> l= doctorService.getDoctorNames();
-        return ResponseEntity.ok(l);
-    }
+
 }

@@ -1,11 +1,10 @@
 package com.example.hms.controller;
 
-import com.example.hms.dto.BookAppointment;
+import com.example.hms.dto.AppointmentRequest;
 import com.example.hms.dto.UserRequest;
 import com.example.hms.dto.UserResponse;
 import com.example.hms.model.User;
 import com.example.hms.service.UserService;
-import com.example.hms.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,10 +29,6 @@ public class UserController {
         return ResponseEntity.ok(userService.loginUser(user));
     }
 
-    @PostMapping("/appointment/{id}")
-    public ResponseEntity<String> bookAppointment(BookAppointment request){
-        return ResponseEntity.ok("Successfully Booked");
-    }
     @GetMapping()
     public ResponseEntity<List<UserResponse>> getAllUser(){
         List<UserResponse> l=userService.getAllUsers();
