@@ -7,11 +7,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Service
 public class DoctorSpecializationServiceImpl implements DoctorSpecializationService{
     @Autowired
     private DoctorSpecializationRepository doctorSpecializationRepository;
-    public List<String> getAllSpecialization(){
+    
+    public List<String> getAllSpecialization()
+    {
         List<DoctorSpecialization>l=doctorSpecializationRepository.findAll();
         List<String> list=new ArrayList<>();
         l.forEach(i->list.add(i.getSpecialization()));
