@@ -5,9 +5,13 @@ import com.example.hms.dto.UserRequest;
 import com.example.hms.dto.UserResponse;
 import com.example.hms.model.User;
 
-public interface UserService {
+import java.util.List;
 
+public interface UserService {
     public UserResponse registerUser(UserRequest userRequest);
     public UserResponse loginUser(User user);
+    public List<UserResponse> getAllUsers();
+    public UserResponse updateUser(Long id,UserRequest userRequests);
+    public UserResponse getUserById(Long id);
     public String saveContactQueries(ContactQueryRequest contactQueryRequest);
 }

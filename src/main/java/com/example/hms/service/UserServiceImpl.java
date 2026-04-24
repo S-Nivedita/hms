@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -49,6 +50,32 @@ public class UserServiceImpl implements UserService{
             throw new RuntimeException("User Not Found");
         }
         return mapToResponse(checkUser);
+    }
+
+    public List<UserResponse> getAllUsers()
+    {
+        List<User> u=userRepository.findAll();
+        List<UserResponse> urobj=u.stream().map(this::mapToResponse).toList();
+        return urobj;
+    }
+
+    public UserResponse updateUser(Long id,UserRequest userRequest)
+    {
+        User user=userRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));
+        user.setFullName(userRequest.getFullName());
+        user.setAddress(userRequest.getAddress());
+        user.setCity(userRequest.getCity());
+        user.setGender(userRequest.getGender());
+        user.setEmail(userRequest.getEmail());
+        user.setUpdationDate(LocalDateTime.now());
+        UserResponse userResponse=mapToResponse(user);
+        return userResponse;
+    }
+    public UserResponse getUserById(Long id)
+    {
+        User u=userRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));
+        UserResponse userResponse=mapToResponse(u);
+        return userResponse;
     }
 
     public String saveContactQueries(ContactQueryRequest contactQueryRequest)

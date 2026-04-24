@@ -1,5 +1,10 @@
 package com.example.hms.dto;
 
+import com.example.hms.model.Doctor;
+import com.example.hms.model.DoctorSpecialization;
+import com.example.hms.model.User;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Data;
 
 import java.time.LocalDate;

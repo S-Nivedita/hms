@@ -1,5 +1,6 @@
 package com.example.hms.controller;
 
+import com.example.hms.dto.AppointmentRequest;
 import com.example.hms.dto.AppointmentResponse;
 import com.example.hms.service.AppointmentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,40 @@ import java.util.List;
 public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
+
+    public AppointmentController(AppointmentService appointmentService)
+    {
+        this.appointmentService=appointmentService;
+    }
+
+    @PostMapping()
+    public ResponseEntity<AppointmentResponse> bookAppointment(@RequestBody AppointmentRequest appointmentRequest)
+    {
+        return ResponseEntity.ok(appointmentService.bookAppointment(appointmentRequest));
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByUserId(@PathVariable Long userId)
+    {
+        return ResponseEntity.ok(appointmentService.getAppointmentsByUser(userId));
+    }
+
     @GetMapping("/doctor/{doctorId}")
-    public ResponseEntity<List<AppointmentResponse>> getAppointments(@PathVariable Long doctorId){
+    public ResponseEntity<List<AppointmentResponse>> getAppointmentsByDoctorId(@PathVariable Long doctorId)
+    {
         return ResponseEntity.ok(appointmentService.getAppointmentsByDoctor(doctorId));
     }
-    @DeleteMapping("/{appointmentId}")
-    public ResponseEntity<String> cancelAppointment(@PathVariable Long appointmentId){
-        appointmentService.cancelAppointment(appointmentId);
-        return ResponseEntity.ok("Appointment cancelled");
+
+    @PatchMapping("{id}/cancel-by-user")
+    public ResponseEntity<AppointmentResponse> cancelByUser(@PathVariable Long id)
+    {
+        return ResponseEntity.ok(appointmentService.cancelAppointmentByUser(id));
+    }
+
+    @PatchMapping("{id}/cancel-by-doctor")
+    public ResponseEntity<AppointmentResponse> cancelByDoctor(@PathVariable Long id)
+    {
+        appointmentService.cancelAppointmentByDoctor(id);
+        return ResponseEntity.ok(appointmentService.cancelAppointmentByDoctor(id));
     }
 }
