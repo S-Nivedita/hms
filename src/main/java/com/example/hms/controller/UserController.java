@@ -1,6 +1,6 @@
 package com.example.hms.controller;
 
-import com.example.hms.dto.AppointmentRequest;
+import com.example.hms.dto.ContactQueryRequest;
 import com.example.hms.dto.UserRequest;
 import com.example.hms.dto.UserResponse;
 import com.example.hms.model.User;
@@ -12,37 +12,47 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
-    @PostMapping("/register")
+
+    @PostMapping("/users/register")
     public ResponseEntity<UserResponse> registerUser(@RequestBody UserRequest userRequest)
     {
         return ResponseEntity.ok(userService.registerUser(userRequest));
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public ResponseEntity<UserResponse> loginUser(@RequestBody User user)
     {
         return ResponseEntity.ok(userService.loginUser(user));
     }
 
-    @GetMapping()
-    public ResponseEntity<List<UserResponse>> getAllUser(){
+    @GetMapping("/users")
+    public ResponseEntity<List<UserResponse>> getAllUser()
+    {
         List<UserResponse> l=userService.getAllUsers();
         return ResponseEntity.ok(l);
     }
-    @GetMapping("{id}")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id){
+
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserResponse> getUserById(@PathVariable Long id)
+    {
         return ResponseEntity.ok(userService.getUserById(id));
     }
-    @PutMapping("{id}")
-    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,@RequestBody UserRequest userRequest){
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<UserResponse> updateUser(@PathVariable Long id,@RequestBody UserRequest userRequest)
+    {
         UserResponse  userResponse=userService.updateUser(id,userRequest);
         return ResponseEntity.ok(userResponse);
-
     }
 
+    @PostMapping("/contact-queries")
+    public ResponseEntity<String> saveContactQueries(@RequestBody ContactQueryRequest contactQueryRequest)
+    {
+        return ResponseEntity.ok(userService.saveContactQueries(contactQueryRequest));
+    }
 }
