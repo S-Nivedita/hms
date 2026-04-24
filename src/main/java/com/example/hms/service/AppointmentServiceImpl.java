@@ -20,33 +20,46 @@ import java.util.List;
 public class AppointmentServiceImpl implements AppointmentService{
     @Autowired
     private AppointmentRepository appointmentRepository;
+    
     @Autowired
     private DoctorRepository doctorRepository;
+    
     @Autowired
     private UserRepository userRepository;
+    
     @Autowired
     private DoctorSpecializationRepository doctorSpecializationRepository;
-    public List<AppointmentResponse> getAppointmentsByUser(Long UserId){
+    
+    public List<AppointmentResponse> getAppointmentsByUser(Long UserId)
+    {
         List<Appointment> appointments=appointmentRepository.findByUser_Id(UserId);
         return appointments.stream().map(this::mapToResponse).toList();
     }
-    public List<AppointmentResponse> getAppointmentsByDoctor(Long doctorId){
+    
+    public List<AppointmentResponse> getAppointmentsByDoctor(Long doctorId)
+    {
         List<Appointment> appointments=appointmentRepository.findByDoctor_Id(doctorId);
         return appointments.stream().map(this::mapToResponse).toList();
     }
-    public AppointmentResponse cancelAppointmentByUser(Long appointmentId){
+    
+    public AppointmentResponse cancelAppointmentByUser(Long appointmentId)
+    {
         Appointment appointment=appointmentRepository.findById(appointmentId).orElseThrow(()->new RuntimeException("User Appointment not found"));
         appointment.setUserStatus(0);
         appointmentRepository.save(appointment);
         return mapToResponse(appointment);
     }
-    public AppointmentResponse cancelAppointmentByDoctor(Long appointmentId){
+    
+    public AppointmentResponse cancelAppointmentByDoctor(Long appointmentId)
+    {
         Appointment appointment=appointmentRepository.findById(appointmentId).orElseThrow(()->new RuntimeException("Doctor Appointment not found"));
         appointment.setDoctorStatus(0);;
         appointmentRepository.save(appointment);
         return mapToResponse(appointment);
     }
-    public AppointmentResponse bookAppointment(AppointmentRequest appointmentRequest){
+    
+    public AppointmentResponse bookAppointment(AppointmentRequest appointmentRequest)
+    {
         Doctor doctor=doctorRepository.findById(appointmentRequest.getDoctorId()).orElseThrow(()->new RuntimeException("Doctor not found"));
         User user=userRepository.findById(appointmentRequest.getUserId()).orElseThrow(()->new RuntimeException("User not found"));
         DoctorSpecialization doctorSpecialization=doctor.getSpecialization();
@@ -63,7 +76,9 @@ public class AppointmentServiceImpl implements AppointmentService{
         appointmentRepository.save(appointment);
         return mapToResponse(appointment);
     }
-    private AppointmentResponse mapToResponse(Appointment appointment){
+    
+    private AppointmentResponse mapToResponse(Appointment appointment)
+    {
         AppointmentResponse ar=new AppointmentResponse();
         ar.setAppointmentId(appointment.getId());
         if(appointment.getUser()!=null){
