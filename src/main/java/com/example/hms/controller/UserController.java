@@ -1,6 +1,7 @@
 package com.example.hms.controller;
 
 import com.example.hms.dto.BookAppointment;
+import com.example.hms.dto.ContactQueryRequest;
 import com.example.hms.dto.UserRequest;
 import com.example.hms.dto.UserResponse;
 import com.example.hms.model.User;
@@ -10,26 +11,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 @CrossOrigin
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/register")
+    @PostMapping("/users/register")
     public ResponseEntity<UserResponse> registerUser(@RequestBody UserRequest userRequest)
     {
         return ResponseEntity.ok(userService.registerUser(userRequest));
     }
 
-    @PostMapping("/login")
+    @PostMapping("/users/login")
     public ResponseEntity<UserResponse> loginUser(@RequestBody User user)
     {
         return ResponseEntity.ok(userService.loginUser(user));
     }
 
-    @PostMapping("/appointment/{id}")
-    public ResponseEntity<String> bookAppointment(BookAppointment request){
-        return ResponseEntity.ok("Successfully Booked");
+    @PostMapping("/contact-queries")
+    public ResponseEntity<String> saveContactQueries(@RequestBody ContactQueryRequest contactQueryRequest)
+    {
+        return ResponseEntity.ok(userService.saveContactQueries(contactQueryRequest));
     }
 }

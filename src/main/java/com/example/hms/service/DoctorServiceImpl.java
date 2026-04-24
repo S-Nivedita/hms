@@ -20,7 +20,8 @@ public class DoctorServiceImpl implements DoctorService{
     private DoctorRepository doctorRepository;
     @Autowired
     private DoctorSpecializationRepository doctorSpecializationRepository;
-    public UpdatedDoctorResponse updateDoctor(Long id, UpdateDoctorRequest request){
+    public UpdatedDoctorResponse updateDoctor(Long id, UpdateDoctorRequest request)
+    {
         Doctor doctor=doctorRepository.findById(id).orElseThrow(()->new RuntimeException("Doctor not found"));
         DoctorSpecialization specialization= doctorSpecializationRepository.findById(request.getSpecializationId()).orElseThrow(()->new RuntimeException("Specialization not found"));
         doctor.setSpecialization(specialization);
@@ -32,6 +33,17 @@ public class DoctorServiceImpl implements DoctorService{
         doctor.setDoctorEmail(request.getDoctorEmail());
         Doctor updated=doctorRepository.save(doctor);
         return mapToResponse(updated);
+    }
+    public List<String> getDoctorNames(){
+        List<Doctor> l=doctorRepository.findAll();
+        List<String> doctorName=new ArrayList<>();
+        l.forEach(i->doctorName.add(i.getDoctorName()));
+        return doctorName;
+    }
+
+    public UpdatedDoctorResponse getDoctorById(Long id)
+    {
+        return mapToResponse(doctorRepository.findById(id).get());
     }
     private UpdatedDoctorResponse mapToResponse(Doctor doctor){
         UpdatedDoctorResponse dr=new UpdatedDoctorResponse();
@@ -47,6 +59,7 @@ public class DoctorServiceImpl implements DoctorService{
         }
         return dr;
     }
+
     @Override
     public void changePassword(Long doctorId, ChangePasswordRequest request){
        Doctor d=doctorRepository.findById(doctorId).orElseThrow(()->new RuntimeException("Doctor Id not found")) ;
@@ -59,16 +72,5 @@ public class DoctorServiceImpl implements DoctorService{
        d.setPassword(request.getConfirmPassword());
        d.setUpdationDate(LocalDateTime.now());
        doctorRepository.save(d);
-    }
-    public List<String> getDoctorNames(){
-        List<Doctor> l=doctorRepository.findAll();
-        List<String> doctorName=new ArrayList<>();
-        l.forEach(i->doctorName.add(i.getDoctorName()));
-        return doctorName;
-    }
-
-    public UpdatedDoctorResponse getDoctorById(Long id)
-    {
-        return mapToResponse(doctorRepository.findById(id).get());
     }
 }

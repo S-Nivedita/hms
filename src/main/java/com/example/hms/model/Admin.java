@@ -1,10 +1,12 @@
 package com.example.hms.model;
 
 import jakarta.persistence.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 @Table(name="admin")
 public class Admin {
     @Id

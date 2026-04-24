@@ -2,8 +2,10 @@ package com.example.hms.controller;
 
 import com.example.hms.dto.AdminRequest;
 import com.example.hms.dto.AdminResponse;
+import com.example.hms.dto.ContactQueryResponse;
 import com.example.hms.dto.DashboardResponse;
 import com.example.hms.model.Admin;
+import com.example.hms.model.ContactQuery;
 import com.example.hms.repository.AdminRepository;
 import com.example.hms.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +14,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api")
 public class AdminController {
     @Autowired
     private AdminService adminService;
@@ -26,43 +29,39 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @GetMapping("/dashboard")
+    @GetMapping("/admin/dashboard")
     public ResponseEntity<DashboardResponse> getDashboardDetails()
     {
         return ResponseEntity.ok(adminService.getDashboardDetails());
     }
 
-    /*@PostMapping("/admin/login")
-    public ResponseEntity<Map<String , Object>> adminLogin(@RequestBody Admin admin)
+    @PostMapping("/auth/admin/login")
+    public ResponseEntity<AdminResponse> loginAdmin(@RequestBody Admin admin)
     {
-        Integer id = admin.getId();
-        Admin data = null;
-        if(id != null)
-        {
-             data = adminRepository.findById(id).orElse(new Admin());
-        }
-        return ResponseEntity.ok(Map.of("success" , true , "data" , toResponse(data)));
+        return ResponseEntity.ok(adminService.loginAdmin(admin));
     }
 
-    @PostMapping("/admin/register")
-    public ResponseEntity<AdminResponse> adminRegister(@RequestBody AdminRequest adminRequest)
+    @GetMapping("/admin/contact-queries/unread")
+    public ResponseEntity<List<ContactQueryResponse>> getUnreadContactQueries()
     {
-        return ResponseEntity.ok(adminService.registerAdmin(adminRequest));
+        return ResponseEntity.ok(adminService.getUnreadContactQueries());
     }
 
-    @PostMapping("/admin/login")
-    public ResponseEntity<AdminResponse> adminLogin(@RequestBody AdminRequest adminRequest)
+    @GetMapping("/admin/contact-queries/read")
+    public ResponseEntity<List<ContactQueryResponse>> getReadContactQueries()
     {
-        return ResponseEntity.ok(adminService.loginAdmin(adminRequest));
-    }*/
+        return ResponseEntity.ok(adminService.getReadContactQueries());
+    }
 
-    /*private Map<String , Object> toResponse(Admin admin)
+    @GetMapping("/admin/contact-queries/{id}")
+    public ResponseEntity<ContactQuery> getContactQueryById(@PathVariable Long id)
     {
-        return Map.of(
-                "id", admin.getId(),
-                "username" , admin.getUsername(),
-                "updation_date", admin.getUpdationDate() == null?"":admin.getUpdationDate()
+        return ResponseEntity.ok(adminService.getContactQueryById(id));
+    }
 
-        );
-    }*/
+    @PatchMapping("/admin/contact-queries/{id}/remark")
+    public ResponseEntity<String> addAdminRemark(@PathVariable Long id, @RequestBody ContactQuery contactQuery)
+    {
+        return ResponseEntity.ok(adminService.addAdminRemark(id, contactQuery));
+    }
 }
