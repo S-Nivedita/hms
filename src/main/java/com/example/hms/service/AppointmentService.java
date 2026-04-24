@@ -6,9 +6,9 @@ import com.example.hms.dto.AppointmentResponse;
 import java.util.List;
 
 public interface AppointmentService {
-    List<AppointmentResponse> getAppointmentsByDoctor(Long doctorId);
-    AppointmentResponse cancelAppointmentByUser(Long AppointmentId);
-    AppointmentResponse cancelAppointmentByDoctor(Long AppointmentId);
-    AppointmentResponse bookAppointment(AppointmentRequest appointmentRequest);
-    List<AppointmentResponse> getAppointmentsByUser(Long UserId);
+    public List<AppointmentResponse> getAppointmentsByDoctor(Long doctorId);
+    public AppointmentResponse cancelAppointmentByUser(Long AppointmentId);
+    public AppointmentResponse cancelAppointmentByDoctor(Long AppointmentId);
+    public AppointmentResponse bookAppointment(AppointmentRequest appointmentRequest);
+    public List<AppointmentResponse> getAppointmentsByUser(Long UserId);
 }
