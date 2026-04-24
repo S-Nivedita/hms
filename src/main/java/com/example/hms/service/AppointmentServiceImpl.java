@@ -47,8 +47,8 @@ public class AppointmentServiceImpl implements AppointmentService{
         return mapToResponse(appointment);
     }
     public AppointmentResponse bookAppointment(AppointmentRequest appointmentRequest){
-        Doctor doctor=doctorRepository.findById(appointmentRequest.getDoctorid()).orElseThrow(()->new RuntimeException("Doctor not found"));
-        User user=userRepository.findById(appointmentRequest.getUserid()).orElseThrow(()->new RuntimeException("User not found"));
+        Doctor doctor=doctorRepository.findById(appointmentRequest.getDoctorId()).orElseThrow(()->new RuntimeException("Doctor not found"));
+        User user=userRepository.findById(appointmentRequest.getUserId()).orElseThrow(()->new RuntimeException("User not found"));
         DoctorSpecialization doctorSpecialization=doctor.getSpecialization();
         Appointment appointment=new Appointment();
         appointment.setDoctor(doctor);
@@ -78,5 +78,4 @@ public class AppointmentServiceImpl implements AppointmentService{
         ar.setStatus(appointment.getDoctorStatus());
         return ar;
     }
-
 }
