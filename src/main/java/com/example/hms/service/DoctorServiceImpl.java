@@ -1,26 +1,28 @@
 package com.example.hms.service;
+
 import com.example.hms.dto.ChangePasswordRequest;
 import com.example.hms.dto.UpdatedDoctorResponse;
 import com.example.hms.repository.DoctorSpecializationRepository;
-import com.example.hms.dto.UpdateDoctorRequest;
+import com.example.hms.dto.UpdatedDoctorRequest;
 import com.example.hms.model.Doctor;
 import com.example.hms.model.DoctorSpecialization;
 import com.example.hms.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class DoctorServiceImpl implements DoctorService{
     @Autowired
     private DoctorRepository doctorRepository;
+    
     @Autowired
     private DoctorSpecializationRepository doctorSpecializationRepository;
-    public UpdatedDoctorResponse updateDoctor(Long id, UpdateDoctorRequest request){
+    
+    public UpdatedDoctorResponse updateDoctor(Long id, UpdatedDoctorRequest request)
+    {
         Doctor doctor=doctorRepository.findById(id).orElseThrow(()->new RuntimeException("Doctor not found"));
         DoctorSpecialization specialization= doctorSpecializationRepository.findById(request.getSpecializationId()).orElseThrow(()->new RuntimeException("Specialization not found"));
         doctor.setSpecialization(specialization);
@@ -33,7 +35,9 @@ public class DoctorServiceImpl implements DoctorService{
         Doctor updated=doctorRepository.save(doctor);
         return mapToResponse(updated);
     }
-    private UpdatedDoctorResponse mapToResponse(Doctor doctor){
+    
+    private UpdatedDoctorResponse mapToResponse(Doctor doctor)
+    {
         UpdatedDoctorResponse dr=new UpdatedDoctorResponse();
         dr.setId(doctor.getId());
         dr.setDoctorName(doctor.getDoctorName());
@@ -47,30 +51,40 @@ public class DoctorServiceImpl implements DoctorService{
         }
         return dr;
     }
+    
     @Override
-    public void changePassword(Long doctorId, ChangePasswordRequest request){
+    public void changePassword(Long doctorId, ChangePasswordRequest request)
+    {
         Doctor d=doctorRepository.findById(doctorId).orElseThrow(()->new RuntimeException("Doctor Id not found")) ;
-        if(!d.getPassword().equals(request.getCurrentPassword())){
+        if(!d.getPassword().equals(request.getCurrentPassword()))
+        {
             throw new RuntimeException("Incorrect Password");
         }
-        if(!request.getNewPassword().equals(request.getConfirmPassword())){
+        if(!request.getNewPassword().equals(request.getConfirmPassword()))
+        {
             throw new RuntimeException("Password mismatch");
         }
         d.setPassword(request.getConfirmPassword());
         d.setUpdationDate(LocalDateTime.now());
         doctorRepository.save(d);
     }
-    public List<UpdatedDoctorResponse> getAllDoctors(){
+    
+    public List<UpdatedDoctorResponse> getAllDoctors()
+    {
         List<Doctor> l=doctorRepository.findAll();
         return  l.stream().map(this::mapToResponse).toList();
     }
+    
     public UpdatedDoctorResponse getDoctorById(Long id)
     {
         return mapToResponse(doctorRepository.findById(id).orElseThrow(()->new RuntimeException("Doctor not found")));
     }
-    public UpdatedDoctorResponse addDoctor(UpdateDoctorRequest updateDoctorRequest){
+    
+    public UpdatedDoctorResponse addDoctor(UpdatedDoctorRequest updateDoctorRequest)
+    {
         Doctor doctor=new Doctor();
-        if(!updateDoctorRequest.getPassword().equals(updateDoctorRequest.getConfirmPassword())){
+        if(!updateDoctorRequest.getPassword().equals(updateDoctorRequest.getConfirmPassword()))
+        {
             throw new RuntimeException("Password Mismatch");
         }
         doctor.setDoctorName(updateDoctorRequest.getDoctorName());
