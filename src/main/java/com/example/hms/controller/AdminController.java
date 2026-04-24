@@ -1,22 +1,16 @@
 package com.example.hms.controller;
 
-import com.example.hms.dto.AdminRequest;
 import com.example.hms.dto.AdminResponse;
 import com.example.hms.dto.ContactQueryResponse;
 import com.example.hms.dto.DashboardResponse;
 import com.example.hms.model.Admin;
 import com.example.hms.model.ContactQuery;
-import com.example.hms.repository.AdminRepository;
 import com.example.hms.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api")
