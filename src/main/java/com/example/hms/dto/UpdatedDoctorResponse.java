@@ -1,10 +1,8 @@
 package com.example.hms.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
+@Data
 public class UpdatedDoctorResponse {
     private Long id;
     private String doctorName;
