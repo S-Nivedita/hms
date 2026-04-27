@@ -1,6 +1,7 @@
 package com.example.hms.service;
 
 import com.example.hms.dto.AdminResponse;
+import com.example.hms.dto.ChangePasswordRequest;
 import com.example.hms.dto.ContactQueryResponse;
 import com.example.hms.dto.DashboardResponse;
 import com.example.hms.model.Admin;
@@ -15,4 +16,5 @@ public interface AdminService {
     public List<ContactQueryResponse> getReadContactQueries();
     public ContactQuery getContactQueryById(Long id);
     public String addAdminRemark(Long id, ContactQuery contactQuery);
+    public void changePassword(Long adminId, ChangePasswordRequest request);
 }
