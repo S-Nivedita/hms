@@ -1,5 +1,6 @@
 package com.example.hms.controller;
 
+import com.example.hms.dto.ChangePasswordRequest;
 import com.example.hms.dto.ContactQueryRequest;
 import com.example.hms.dto.UserRequest;
 import com.example.hms.dto.UserResponse;
@@ -48,6 +49,13 @@ public class UserController {
     {
         UserResponse  userResponse=userService.updateUser(id,userRequest);
         return ResponseEntity.ok(userResponse);
+    }
+
+    @PutMapping("/users/{id}/change-password")
+    public ResponseEntity<String> changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequest request)
+    {
+        userService.changePassword(id,request);
+        return ResponseEntity.ok("Password Changed successfully");
     }
 
     @PostMapping("/contact-queries")
