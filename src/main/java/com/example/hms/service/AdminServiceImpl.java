@@ -1,14 +1,17 @@
 package com.example.hms.service;
 
 import com.example.hms.dto.AdminResponse;
+import com.example.hms.dto.ChangePasswordRequest;
 import com.example.hms.dto.ContactQueryResponse;
 import com.example.hms.dto.DashboardResponse;
 import com.example.hms.model.Admin;
 import com.example.hms.model.ContactQuery;
+import com.example.hms.model.Doctor;
 import com.example.hms.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -104,6 +107,23 @@ public class AdminServiceImpl implements AdminService{
             return "Admin Remark Added Successfully";
         }
         throw new RuntimeException("Contact Query Not Found");
+    }
+
+    @Override
+    public void changePassword(Long adminId, ChangePasswordRequest request)
+    {
+        Admin admin=adminRepository.findById(adminId).orElseThrow(() -> new RuntimeException("Admin Not Found"));
+        if(!admin.getPassword().equals(request.getCurrentPassword()))
+        {
+            throw new RuntimeException("Incorrect Password");
+        }
+        if(!request.getNewPassword().equals(request.getConfirmPassword()))
+        {
+            throw new RuntimeException("Password mismatch");
+        }
+        admin.setPassword(request.getConfirmPassword());
+        admin.setUpdationDate(LocalDateTime.now());
+        adminRepository.save(admin);
     }
 
     public ContactQueryResponse mapToContactQueryResponse(ContactQuery contactQuery)

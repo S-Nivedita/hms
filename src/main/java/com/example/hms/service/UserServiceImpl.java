@@ -1,8 +1,10 @@
 package com.example.hms.service;
 
+import com.example.hms.dto.ChangePasswordRequest;
 import com.example.hms.dto.ContactQueryRequest;
 import com.example.hms.dto.UserRequest;
 import com.example.hms.dto.UserResponse;
+import com.example.hms.model.Admin;
 import com.example.hms.model.ContactQuery;
 import com.example.hms.model.User;
 import com.example.hms.repository.ContactQueryRepository;
@@ -89,6 +91,23 @@ public class UserServiceImpl implements UserService{
         contactQuery.setRead(false);
         ContactQuery query = contactQueryRepository.save(contactQuery);
         return "Your information is successfully submitted";
+    }
+
+    @Override
+    public void changePassword(Long userId, ChangePasswordRequest request)
+    {
+        User user=userRepository.findById(userId).orElseThrow(() -> new RuntimeException("Admin Not Found"));
+        if(!user.getPassword().equals(request.getCurrentPassword()))
+        {
+            throw new RuntimeException("Incorrect Password");
+        }
+        if(!request.getNewPassword().equals(request.getConfirmPassword()))
+        {
+            throw new RuntimeException("Password mismatch");
+        }
+        user.setPassword(request.getConfirmPassword());
+        user.setUpdationDate(LocalDateTime.now());
+        userRepository.save(user);
     }
 
     private UserResponse mapToResponse(User user)

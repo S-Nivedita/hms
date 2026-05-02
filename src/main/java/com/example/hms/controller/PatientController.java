@@ -1,8 +1,7 @@
 package com.example.hms.controller;
 
-import com.example.hms.dto.PatientRequest;
-import com.example.hms.dto.PatientResponse;
-import com.example.hms.dto.UpdatedDoctorResponse;
+import com.example.hms.dto.*;
+import com.example.hms.model.MedicalHistory;
 import com.example.hms.model.Patient;
 import com.example.hms.service.DoctorService;
 import com.example.hms.service.PatientService;
@@ -50,5 +49,17 @@ public class PatientController {
     public ResponseEntity<PatientResponse> updatePatientById(@PathVariable Long id , @RequestBody Patient patient)
     {
         return ResponseEntity.ok(patientService.updatePatientById(id , patient));
+    }
+
+    @PostMapping("/{patientId}/medical-history")
+    public ResponseEntity<MedicalHistoryResponse> createMedicalHistory(@PathVariable Long patientId , @RequestBody MedicalHistoryRequest medicalHistoryRequest)
+    {
+        return ResponseEntity.ok(patientService.createMedicalHistory(patientId , medicalHistoryRequest));
+    }
+
+    @GetMapping("/{patientId}/medical-history")
+    public ResponseEntity<MedicalHistoryResponse> getMedicalHistory(@PathVariable Long patientId)
+    {
+        return ResponseEntity.ok(patientService.getMedicalHistory(patientId));
     }
 }

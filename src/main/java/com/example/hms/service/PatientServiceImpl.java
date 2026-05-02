@@ -1,10 +1,14 @@
 package com.example.hms.service;
 
+import com.example.hms.dto.MedicalHistoryRequest;
+import com.example.hms.dto.MedicalHistoryResponse;
 import com.example.hms.dto.PatientRequest;
 import com.example.hms.dto.PatientResponse;
 import com.example.hms.model.Doctor;
+import com.example.hms.model.MedicalHistory;
 import com.example.hms.model.Patient;
 import com.example.hms.repository.DoctorRepository;
+import com.example.hms.repository.MedicalHistoryRepository;
 import com.example.hms.repository.PatientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,10 +26,14 @@ public class PatientServiceImpl implements PatientService {
     @Autowired
     private DoctorRepository doctorRepository;
 
-    public PatientServiceImpl(PatientRepository patientRepository, DoctorRepository doctorRepository)
+    @Autowired
+    private MedicalHistoryRepository medicalHistoryRepository;
+
+    public PatientServiceImpl(PatientRepository patientRepository, DoctorRepository doctorRepository , MedicalHistoryRepository medicalHistoryRepository)
     {
         this.patientRepository = patientRepository;
         this.doctorRepository = doctorRepository;
+        this.medicalHistoryRepository = medicalHistoryRepository;
     }
 
     public PatientResponse createPatients(PatientRequest patientRequest)
@@ -87,6 +95,54 @@ public class PatientServiceImpl implements PatientService {
             return mapToResponse(newPatient);
         }
         throw new RuntimeException("Patient Not Found");
+    }
+
+    public MedicalHistoryResponse createMedicalHistory(Long patientId , MedicalHistoryRequest medicalHistoryRequest)
+    {
+        MedicalHistory medicalHistory = new MedicalHistory();
+        Patient patient = patientRepository.findById(patientId).get();
+        medicalHistory.setPatient(patient);
+        medicalHistory.setBloodPressure(medicalHistoryRequest.getBloodPressure());
+        medicalHistory.setBloodSugar(medicalHistoryRequest.getBloodSugar());
+        medicalHistory.setWeight(medicalHistoryRequest.getWeight());
+        medicalHistory.setTemperature(medicalHistoryRequest.getTemperature());
+        medicalHistory.setMedicalPrescription(medicalHistoryRequest.getMedicalPrescription());
+        medicalHistory.setCreationDate(LocalDateTime.now());
+        MedicalHistory newMedicalHistory = medicalHistoryRepository.save(medicalHistory);
+        return mapToResponse(newMedicalHistory);
+    }
+
+    public MedicalHistoryResponse getMedicalHistory(Long patientId)
+    {
+        Optional<Patient> patient = patientRepository.findById(patientId);
+        if(patient.isPresent())
+        {
+            MedicalHistory medicalHistory = medicalHistoryRepository.findByPatient(patient.get());
+            if(medicalHistory != null)
+            {
+                return mapToResponse(medicalHistory);
+            }
+            else
+            {
+                throw new RuntimeException("Medical History not found for the Patient ID: "+patientId);
+            }
+        }
+        else
+        {
+            throw new RuntimeException("Patient ID not found");
+        }
+    }
+
+    public MedicalHistoryResponse mapToResponse(MedicalHistory medicalHistory)
+    {
+        MedicalHistoryResponse medicalHistoryResponse = new MedicalHistoryResponse();
+        medicalHistoryResponse.setPatientName(medicalHistory.getPatient().getPatientName());
+        medicalHistoryResponse.setBloodPressure(medicalHistory.getBloodPressure());
+        medicalHistoryResponse.setBloodSugar(medicalHistory.getBloodSugar());
+        medicalHistoryResponse.setWeight(medicalHistory.getWeight());
+        medicalHistoryResponse.setTemperature(medicalHistory.getTemperature());
+        medicalHistoryResponse.setMedicalPrescription(medicalHistory.getMedicalPrescription());
+        return medicalHistoryResponse;
     }
 
     public PatientResponse mapToResponse(Patient patient)

@@ -6,7 +6,6 @@ import org.springframework.boot.persistence.autoconfigure.EntityScan;
 
 @SpringBootApplication
 @EntityScan(basePackages = "com.example.hms.model")
-
 public class HmsApplication {
 
 	public static void main(String[] args) {

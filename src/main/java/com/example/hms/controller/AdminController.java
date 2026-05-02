@@ -1,6 +1,7 @@
 package com.example.hms.controller;
 
 import com.example.hms.dto.AdminResponse;
+import com.example.hms.dto.ChangePasswordRequest;
 import com.example.hms.dto.ContactQueryResponse;
 import com.example.hms.dto.DashboardResponse;
 import com.example.hms.model.Admin;
@@ -57,5 +58,12 @@ public class AdminController {
     public ResponseEntity<String> addAdminRemark(@PathVariable Long id, @RequestBody ContactQuery contactQuery)
     {
         return ResponseEntity.ok(adminService.addAdminRemark(id, contactQuery));
+    }
+
+    @PutMapping("/admin/{id}/change-password")
+    public ResponseEntity<String> changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequest request)
+    {
+        adminService.changePassword(id,request);
+        return ResponseEntity.ok("Password Changed successfully");
     }
 }

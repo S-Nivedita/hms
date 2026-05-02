@@ -22,4 +22,21 @@ public class MedicalHistory {
     private String temperature;
     private String medicalPrescription;
     private LocalDateTime creationDate;
+    private LocalDateTime updationDate;
+
+    @PrePersist
+    void onCreate()
+    {
+        if(this.creationDate == null)
+        {
+            this.creationDate = LocalDateTime.now();
+        }
+        this.updationDate = null;
+    }
+
+    @PreUpdate
+    void onUpdate()
+    {
+        this.updationDate = LocalDateTime.now();
+    }
 }
