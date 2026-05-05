@@ -12,11 +12,13 @@ import java.time.LocalDateTime;
 
 @Data
 public class AppointmentResponse {
-    private Long appointmentId;
     private String patientName;
+    private String doctorName;
     private String specialization;
     private Long consultancyFees;
     private LocalDate appointmentDate;
+    private String appointmentTime;
     private LocalDateTime creationDate;
+    private String currentStatus;
     private int status;
 }

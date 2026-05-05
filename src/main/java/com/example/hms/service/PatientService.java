@@ -15,6 +15,7 @@ public interface PatientService {
     public PatientResponse getPatientById(Long id);
     public PatientResponse updatePatientById(Long id , Patient patient);
     public List<PatientResponse> getAllpatients();
+    public List<PatientResponse> getPatientsByDoctorId(Long doctorId);
     public MedicalHistoryResponse createMedicalHistory(Long patientId , MedicalHistoryRequest medicalHistoryRequest);
-    public MedicalHistoryResponse getMedicalHistory(Long patientId);
+    public List<MedicalHistoryResponse> getMedicalHistoryByPatientID(Long patientId);
 }

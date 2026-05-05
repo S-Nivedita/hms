@@ -28,9 +28,9 @@ public class PatientController {
     }
 
     @GetMapping("/doctor/{doctorId}")
-    public ResponseEntity<UpdatedDoctorResponse> getDoctorById(@PathVariable Long doctorId)
+    public ResponseEntity<List<PatientResponse>> getPatientsByDoctorId(@PathVariable Long doctorId)
     {
-        return ResponseEntity.ok(doctorService.getDoctorById(doctorId));
+        return ResponseEntity.ok(patientService.getPatientsByDoctorId(doctorId));
     }
 
     @GetMapping("/{id}")
@@ -58,8 +58,8 @@ public class PatientController {
     }
 
     @GetMapping("/{patientId}/medical-history")
-    public ResponseEntity<MedicalHistoryResponse> getMedicalHistory(@PathVariable Long patientId)
+    public ResponseEntity<List<MedicalHistoryResponse>> getMedicalHistory(@PathVariable Long patientId)
     {
-        return ResponseEntity.ok(patientService.getMedicalHistory(patientId));
+        return ResponseEntity.ok(patientService.getMedicalHistoryByPatientID(patientId));
     }
 }

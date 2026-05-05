@@ -77,6 +77,28 @@ public class PatientServiceImpl implements PatientService {
         return patientsList;
     }
 
+    public List<PatientResponse> getPatientsByDoctorId(Long doctorId)
+    {
+        Optional<Doctor> doctor = doctorRepository.findById(doctorId);
+        if(doctor.isPresent())
+        {
+            List<PatientResponse> patientResponses = new ArrayList<>();
+            List<Patient> patients = patientRepository.findAll();
+            for(Patient patient: patients)
+            {
+                if(patient.getDoctor().getId() == doctorId)
+                {
+                    patientResponses.add(mapToResponse(patient));
+                }
+            }
+            return patientResponses;
+        }
+        else
+        {
+            throw new RuntimeException("Doctor ID:"+doctorId+" not found");
+        }
+    }
+
     public PatientResponse updatePatientById(Long id , Patient patient)
     {
         Optional<Patient> currentPatient = patientRepository.findById(id);
@@ -112,20 +134,21 @@ public class PatientServiceImpl implements PatientService {
         return mapToResponse(newMedicalHistory);
     }
 
-    public MedicalHistoryResponse getMedicalHistory(Long patientId)
+    public List<MedicalHistoryResponse> getMedicalHistoryByPatientID(Long patientId)
     {
         Optional<Patient> patient = patientRepository.findById(patientId);
         if(patient.isPresent())
         {
-            MedicalHistory medicalHistory = medicalHistoryRepository.findByPatient(patient.get());
-            if(medicalHistory != null)
+            List<MedicalHistoryResponse> medicalHistoryResponses = new ArrayList<>();
+            List<MedicalHistory> medicalHistories = medicalHistoryRepository.findAll();
+            for(MedicalHistory medicalHistory: medicalHistories)
             {
-                return mapToResponse(medicalHistory);
+                if(medicalHistory.getPatient().getId() == patientId)
+                {
+                    medicalHistoryResponses.add(mapToResponse(medicalHistory));
+                }
             }
-            else
-            {
-                throw new RuntimeException("Medical History not found for the Patient ID: "+patientId);
-            }
+            return medicalHistoryResponses;
         }
         else
         {

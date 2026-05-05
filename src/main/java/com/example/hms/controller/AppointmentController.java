@@ -39,13 +39,13 @@ public class AppointmentController {
     }
 
     @PatchMapping("{id}/cancel-by-user")
-    public ResponseEntity<AppointmentResponse> cancelByUser(@PathVariable Long id)
+    public ResponseEntity<String> cancelByUser(@PathVariable Long id)
     {
         return ResponseEntity.ok(appointmentService.cancelAppointmentByUser(id));
     }
 
     @PatchMapping("{id}/cancel-by-doctor")
-    public ResponseEntity<AppointmentResponse> cancelByDoctor(@PathVariable Long id)
+    public ResponseEntity<String> cancelByDoctor(@PathVariable Long id)
     {
         appointmentService.cancelAppointmentByDoctor(id);
         return ResponseEntity.ok(appointmentService.cancelAppointmentByDoctor(id));

@@ -1,6 +1,7 @@
 package com.example.hms.controller;
 
-import com.example.hms.dto.AdminResponse;
+import com.example.hms.security.JwtTokenProvider;
+import com.example.hms.dto.AuthResponse;
 import com.example.hms.dto.ChangePasswordRequest;
 import com.example.hms.dto.ContactQueryResponse;
 import com.example.hms.dto.DashboardResponse;
@@ -19,6 +20,12 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
+    @Autowired
+    private com.example.hms.repository.AdminRepository adminRepository;
+
+    @Autowired
+    private JwtTokenProvider tokenProvider;
+
     public AdminController(AdminService adminService)
     {
         this.adminService = adminService;
@@ -30,10 +37,19 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getDashboardDetails());
     }
 
+
     @PostMapping("/auth/admin/login")
-    public ResponseEntity<AdminResponse> loginAdmin(@RequestBody Admin admin)
+    public ResponseEntity<AuthResponse> loginAdmin(@RequestBody Admin admin)
     {
-        return ResponseEntity.ok(adminService.loginAdmin(admin));
+        com.example.hms.model.Admin a = adminRepository.findByUsername(admin.getUsername()).orElseThrow(() -> new RuntimeException("Invalid Admin Username"));
+        if (!a.getPassword().equals(admin.getPassword())) throw new RuntimeException("Invalid Admin Password");
+        String token = tokenProvider.generateToken(a.getUsername(), "ADMIN", a.getId());
+        AuthResponse resp = new AuthResponse();
+        resp.setToken(token);
+        resp.setRole("ADMIN");
+        resp.setUserId(a.getId());
+        resp.setEmail(a.getUsername());
+        return ResponseEntity.ok(resp);
     }
 
     @GetMapping("/admin/contact-queries/unread")

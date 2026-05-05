@@ -12,8 +12,9 @@ public interface UserService {
     public UserResponse registerUser(UserRequest userRequest);
     public UserResponse loginUser(User user);
     public List<UserResponse> getAllUsers();
-    public UserResponse updateUser(Long id,UserRequest userRequests);
     public UserResponse getUserById(Long id);
+    public UserResponse updateUser(Long id,UserRequest userRequests);
+    public String deleteUser(Long id);
     public String saveContactQueries(ContactQueryRequest contactQueryRequest);
     public void changePassword(Long userId, ChangePasswordRequest request);
 }

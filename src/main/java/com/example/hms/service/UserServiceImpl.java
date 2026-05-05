@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -68,11 +69,23 @@ public class UserServiceImpl implements UserService{
         user.setAddress(userRequest.getAddress());
         user.setCity(userRequest.getCity());
         user.setGender(userRequest.getGender());
-        user.setEmail(userRequest.getEmail());
+        user.setEmail(userRequest.getEmail() != null?userRequest.getEmail():user.getEmail());
         user.setUpdationDate(LocalDateTime.now());
         UserResponse userResponse=mapToResponse(user);
         return userResponse;
     }
+
+    public String deleteUser(Long id)
+    {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent())
+        {
+            userRepository.deleteById(id);
+            return "User with ID:"+id+" has been deleted sucessfully";
+        }
+        throw new RuntimeException("User with ID:"+id+" not found");
+    }
+
     public UserResponse getUserById(Long id)
     {
         User u=userRepository.findById(id).orElseThrow(()->new RuntimeException("User not found"));

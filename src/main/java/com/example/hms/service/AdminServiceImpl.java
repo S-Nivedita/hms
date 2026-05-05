@@ -26,10 +26,13 @@ public class AdminServiceImpl implements AdminService{
     private UserRepository userRepository;
 
     @Autowired
-    private PatientRepository patientRepository;
+    private DoctorRepository doctorRepository;
 
     @Autowired
-    private DoctorRepository doctorRepository;
+    private AppointmentRepository appointmentRepository;
+
+    @Autowired
+    private PatientRepository patientRepository;
 
     @Autowired
     private ContactQueryRepository contactQueryRepository;
@@ -38,8 +41,10 @@ public class AdminServiceImpl implements AdminService{
     {
         DashboardResponse dashRes = new DashboardResponse();
         dashRes.setUserCount(userRepository.count());
-        dashRes.setPatientCount(patientRepository.count());
         dashRes.setDoctorCount(doctorRepository.count());
+        dashRes.setAppointmentCount(appointmentRepository.count());
+        dashRes.setPatientCount(patientRepository.count());
+        dashRes.setQueriesCount(contactQueryRepository.count());
         return dashRes;
     }
 

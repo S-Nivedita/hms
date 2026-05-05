@@ -51,6 +51,12 @@ public class UserController {
         return ResponseEntity.ok(userResponse);
     }
 
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long id)
+    {
+        return ResponseEntity.ok(userService.deleteUser(id));
+    }
+
     @PutMapping("/users/{id}/change-password")
     public ResponseEntity<String> changePassword(@PathVariable Long id, @RequestBody ChangePasswordRequest request)
     {

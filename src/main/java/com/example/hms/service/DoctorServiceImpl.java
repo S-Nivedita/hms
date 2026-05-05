@@ -21,6 +21,34 @@ public class DoctorServiceImpl implements DoctorService{
     @Autowired
     private DoctorSpecializationRepository doctorSpecializationRepository;
 
+    public List<UpdatedDoctorResponse> getAllDoctors()
+    {
+        List<Doctor> l=doctorRepository.findAll();
+        return  l.stream().map(this::mapToResponse).toList();
+    }
+
+    public UpdatedDoctorResponse getDoctorById(Long id)
+    {
+        return mapToResponse(doctorRepository.findById(id).orElseThrow(()->new RuntimeException("Doctor not found")));
+    }
+
+    public UpdatedDoctorResponse addDoctor(UpdatedDoctorRequest updateDoctorRequest)
+    {
+        Doctor doctor=new Doctor();
+        doctor.setDoctorName(updateDoctorRequest.getDoctorName());
+        doctor.setDoctorEmail(updateDoctorRequest.getDoctorEmail());
+        doctor.setDoctorFees(updateDoctorRequest.getDoctorFees());
+        doctor.setContactNo(updateDoctorRequest.getContactNo());
+        doctor.setUpdationDate(LocalDateTime.now());
+        doctor.setCreationDate(LocalDateTime.now());
+        doctor.setAddress(updateDoctorRequest.getAddress());
+        doctor.setSpecialization(doctorSpecializationRepository.findById(updateDoctorRequest.getSpecializationId()).orElseThrow(()->new RuntimeException("Specialization not found")));
+        doctor.getSpecialization().setId(updateDoctorRequest.getSpecializationId());
+        doctor.setPassword(updateDoctorRequest.getPassword());
+        doctorRepository.save(doctor);
+        return mapToResponse(doctor);
+    }
+
     public UpdatedDoctorResponse updateDoctor(Long id, UpdatedDoctorRequest request)
     {
         Doctor doctor=doctorRepository.findById(id).orElseThrow(()->new RuntimeException("Doctor not found"));
@@ -30,8 +58,7 @@ public class DoctorServiceImpl implements DoctorService{
         doctor.setAddress(request.getAddress());
         doctor.setDoctorFees(request.getDoctorFees());
         doctor.setContactNo(request.getContactNo());
-        doctor.setDoctorEmail(request.getDoctorEmail());
-        doctor.setDoctorEmail(request.getDoctorEmail());
+        doctor.setDoctorEmail(request.getDoctorEmail() != null?request.getDoctorEmail(): doctor.getDoctorEmail());
         Doctor updated=doctorRepository.save(doctor);
         return mapToResponse(updated);
     }
@@ -67,37 +94,5 @@ public class DoctorServiceImpl implements DoctorService{
         d.setPassword(request.getConfirmPassword());
         d.setUpdationDate(LocalDateTime.now());
         doctorRepository.save(d);
-    }
-
-    public List<UpdatedDoctorResponse> getAllDoctors()
-    {
-        List<Doctor> l=doctorRepository.findAll();
-        return  l.stream().map(this::mapToResponse).toList();
-    }
-
-    public UpdatedDoctorResponse getDoctorById(Long id)
-    {
-        return mapToResponse(doctorRepository.findById(id).orElseThrow(()->new RuntimeException("Doctor not found")));
-    }
-
-    public UpdatedDoctorResponse addDoctor(UpdatedDoctorRequest updateDoctorRequest)
-    {
-        Doctor doctor=new Doctor();
-        if(!updateDoctorRequest.getPassword().equals(updateDoctorRequest.getConfirmPassword()))
-        {
-            throw new RuntimeException("Password Mismatch");
-        }
-        doctor.setDoctorName(updateDoctorRequest.getDoctorName());
-        doctor.setDoctorEmail(updateDoctorRequest.getDoctorEmail());
-        doctor.setDoctorFees(updateDoctorRequest.getDoctorFees());
-        doctor.setContactNo(updateDoctorRequest.getContactNo());
-        doctor.setUpdationDate(LocalDateTime.now());
-        doctor.setCreationDate(LocalDateTime.now());
-        doctor.setAddress(updateDoctorRequest.getAddress());
-        doctor.setSpecialization(doctorSpecializationRepository.findById(updateDoctorRequest.getSpecializationId()).orElseThrow(()->new RuntimeException("Specialization not found")));
-        doctor.getSpecialization().setId(updateDoctorRequest.getSpecializationId());
-        doctor.setPassword(updateDoctorRequest.getPassword());
-        doctorRepository.save(doctor);
-        return mapToResponse(doctor);
     }
 }

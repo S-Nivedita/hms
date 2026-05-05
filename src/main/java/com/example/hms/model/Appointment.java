@@ -25,7 +25,7 @@ public class Appointment {
     private User user;
     private Long consultancyFees;
     private LocalDate appointmentDate;
-    private LocalTime appointmentTime;
+    private String appointmentTime;
     private LocalDateTime postingDate;
     private int userStatus;
     private int doctorStatus;

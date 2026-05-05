@@ -11,5 +11,5 @@ public class AppointmentRequest {
     private Long doctorId;
     private Long consultancyFees;
     private LocalDate appointmentDate;
-    private LocalTime appointmentTime;
+    private String appointmentTime;
 }
