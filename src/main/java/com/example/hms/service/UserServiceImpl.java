@@ -126,6 +126,7 @@ public class UserServiceImpl implements UserService{
     private UserResponse mapToResponse(User user)
     {
         UserResponse userResponse = new UserResponse();
+        userResponse.setUserId(user.getId());
         userResponse.setFullName(user.getFullName());
         userResponse.setEmail(user.getEmail());
         userResponse.setAddress(user.getAddress());
