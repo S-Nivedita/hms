@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class ContactQueryResponse {
+    private Long contactQueryId;
     private String fullName;
     private String email;
     private Long contactNo;
