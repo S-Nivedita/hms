@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -50,6 +51,17 @@ public class AppointmentServiceImpl implements AppointmentService{
         return mapToResponse(appointment);
     }
 
+    public List<AppointmentResponse> getAllAppointments()
+    {
+        List<AppointmentResponse> appointmentResponses = new ArrayList<>();
+        List<Appointment> appointments = appointmentRepository.findAll();
+        for(Appointment appointment: appointments)
+        {
+            appointmentResponses.add(mapToResponse(appointment));
+        }
+        return appointmentResponses;
+    }
+
     public List<AppointmentResponse> getAppointmentsByUser(Long UserId)
     {
         List<Appointment> appointments=appointmentRepository.findByUser_Id(UserId);
@@ -79,13 +91,11 @@ public class AppointmentServiceImpl implements AppointmentService{
         appointmentRepository.save(appointment);
         return "Cancel by Doctor";
     }
-    public List<AppointmentResponse> getAllAppointments(){
-        List<Appointment> l=appointmentRepository.findAll();
-        return l.stream().map(this::mapToResponse).toList();
-    }
+
     private AppointmentResponse mapToResponse(Appointment appointment)
     {
         AppointmentResponse ar=new AppointmentResponse();
+        ar.setAppointmentId(appointment.getId());
         ar.setDoctorName(appointment.getDoctor().getDoctorName() != null?appointment.getDoctor().getDoctorName():null);
         if(appointment.getUser()!=null){
             ar.setPatientName(appointment.getUser().getFullName());
