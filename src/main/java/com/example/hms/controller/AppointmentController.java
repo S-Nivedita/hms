@@ -19,15 +19,17 @@ public class AppointmentController {
     {
         this.appointmentService=appointmentService;
     }
-    
-    @GetMapping()
-    public ResponseEntity<List<AppointmentResponse>> getAllAppointments(){
-        return ResponseEntity.ok(appointmentService.getAllAppointments());
-    }
+
     @PostMapping()
     public ResponseEntity<AppointmentResponse> bookAppointment(@RequestBody AppointmentRequest appointmentRequest)
     {
         return ResponseEntity.ok(appointmentService.bookAppointment(appointmentRequest));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<AppointmentResponse>> getAllAppointments()
+    {
+        return ResponseEntity.ok(appointmentService.getAllAppointments());
     }
 
     @GetMapping("/user/{userId}")
