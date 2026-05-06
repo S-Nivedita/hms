@@ -43,6 +43,7 @@ public class DoctorSpecializationServiceImpl implements DoctorSpecializationServ
     }
     public DoctorSpecializationResponse mapToResponse(DoctorSpecialization ds){
         DoctorSpecializationResponse dsr=new DoctorSpecializationResponse();
+        dsr.setId(ds.getId());
         dsr.setSpecialization(ds.getSpecialization());
         dsr.setCreationDate(ds.getCreationDate());
         dsr.setUpdationDate(ds.getUpdationDate());
