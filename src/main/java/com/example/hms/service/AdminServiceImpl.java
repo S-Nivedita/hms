@@ -134,6 +134,7 @@ public class AdminServiceImpl implements AdminService{
     public ContactQueryResponse mapToContactQueryResponse(ContactQuery contactQuery)
     {
         ContactQueryResponse contactQueryResponse = new ContactQueryResponse();
+        contactQueryResponse.setContactQueryId(contactQuery.getId());
         contactQueryResponse.setFullName(contactQuery.getFullName());
         contactQueryResponse.setEmail(contactQuery.getEmail());
         contactQueryResponse.setContactNo(contactQuery.getContactNo());
