@@ -11,4 +11,5 @@ public interface AppointmentService {
     public String cancelAppointmentByUser(Long AppointmentId);
     public String cancelAppointmentByDoctor(Long AppointmentId);
     public List<AppointmentResponse> getAppointmentsByUser(Long UserId);
+    public List<AppointmentResponse> getAllAppointments();
 }
