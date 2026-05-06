@@ -51,6 +51,7 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/api/patients/*/medical-history").hasAnyAuthority("DOCTOR", "ADMIN")
 
                         .requestMatchers(HttpMethod.POST, "/api/appointments").hasAnyAuthority("USER", "ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/api/appointments").hasAnyAuthority("USER", "DOCTOR", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/appointments/user/**").hasAnyAuthority("USER", "ADMIN")
                         .requestMatchers(HttpMethod.GET, "/api/appointments/doctor/**").hasAnyAuthority("DOCTOR", "ADMIN")
                         .requestMatchers(HttpMethod.PATCH, "/api/appointments/*/cancel-by-user").hasAnyAuthority("USER", "ADMIN")
