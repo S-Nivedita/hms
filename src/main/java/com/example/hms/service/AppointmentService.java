@@ -8,8 +8,8 @@ import java.util.List;
 public interface AppointmentService {
     public List<AppointmentResponse> getAppointmentsByDoctor(Long doctorId);
     public AppointmentResponse bookAppointment(AppointmentRequest appointmentRequest);
+    public List<AppointmentResponse> getAllAppointments();
     public String cancelAppointmentByUser(Long AppointmentId);
     public String cancelAppointmentByDoctor(Long AppointmentId);
     public List<AppointmentResponse> getAppointmentsByUser(Long UserId);
-    public List<AppointmentResponse> getAllAppointments();
 }
