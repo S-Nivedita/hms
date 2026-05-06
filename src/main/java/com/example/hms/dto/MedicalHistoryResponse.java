@@ -4,7 +4,8 @@ import lombok.Data;
 
 @Data
 public class MedicalHistoryResponse {
-    public String patientName;
+    private Long id;
+    private String patientName;
     private String bloodPressure;
     private String bloodSugar;
     private String weight;
