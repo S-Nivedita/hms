@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class PatientResponse {
+    private Long patientId;
     private Long doctorId;
     private String patientName;
     private Long patientContactNo;
