@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class AppointmentResponse {
+    private Long appointmentId;
     private String patientName;
     private String doctorName;
     private String specialization;
