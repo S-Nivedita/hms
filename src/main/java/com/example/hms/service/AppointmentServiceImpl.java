@@ -79,7 +79,10 @@ public class AppointmentServiceImpl implements AppointmentService{
         appointmentRepository.save(appointment);
         return "Cancel by Doctor";
     }
-
+    public List<AppointmentResponse> getAllAppointments(){
+        List<Appointment> l=appointmentRepository.findAll();
+        return l.stream().map(this::mapToResponse).toList();
+    }
     private AppointmentResponse mapToResponse(Appointment appointment)
     {
         AppointmentResponse ar=new AppointmentResponse();
