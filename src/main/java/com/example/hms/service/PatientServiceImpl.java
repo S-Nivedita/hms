@@ -159,6 +159,7 @@ public class PatientServiceImpl implements PatientService {
     public MedicalHistoryResponse mapToResponse(MedicalHistory medicalHistory)
     {
         MedicalHistoryResponse medicalHistoryResponse = new MedicalHistoryResponse();
+        medicalHistoryResponse.setId(medicalHistory.getId());
         medicalHistoryResponse.setPatientName(medicalHistory.getPatient().getPatientName());
         medicalHistoryResponse.setBloodPressure(medicalHistory.getBloodPressure());
         medicalHistoryResponse.setBloodSugar(medicalHistory.getBloodSugar());
@@ -171,6 +172,7 @@ public class PatientServiceImpl implements PatientService {
     public PatientResponse mapToResponse(Patient patient)
     {
         PatientResponse response = new PatientResponse();
+        response.setPatientId(patient.getId());
         response.setDoctorId(patient.getDoctor().getId());
         response.setPatientName(patient.getPatientName());
         response.setPatientContactNo(patient.getPatientContactNo());
